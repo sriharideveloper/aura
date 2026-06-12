@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura — Your Intelligent Presence</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════ AMBIENT BACKGROUND ══ -->
+  <div class="ambient-bg">
+    <div class="grain-overlay"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ BOOT SCREEN ══════════ -->
+  <div id="boot-screen" class="boot-screen">
+    <div class="boot-logo">
+      <div class="boot-ring"></div>
+      <div class="boot-ring boot-ring-2"></div>
+      <div class="boot-ring boot-ring-3"></div>
+      <span class="boot-wordmark">AURA</span>
+    </div>
+    <p class="boot-tagline">Initializing your intelligent presence…</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ MAIN SHELL ═══════════ -->
+  <div id="app" class="app hidden">
+
+    <!-- ─── HEADER ─────────────────────────────────────────────────── -->
+    <header class="topbar">
+      <div class="topbar-brand">
+        <div class="brand-gem"></div>
+        <span class="brand-name">AURA</span>
+      </div>
+      <nav class="topbar-actions">
+        <button class="icon-btn" id="btn-tts" title="Toggle voice response" aria-label="Toggle Text-to-Speech">
+          <i data-lucide="volume-2"></i>
+        </button>
+        <button class="icon-btn" id="btn-clear" title="Clear chat" aria-label="Clear chat history">
+          <i data-lucide="trash-2"></i>
+        </button>
+        <button class="icon-btn" id="btn-settings" title="Open settings" aria-label="Open settings">
+          <i data-lucide="settings-2"></i>
+        </button>
+      </nav>
+    </header>
+
+    <!-- ─── MAIN LAYOUT ────────────────────────────────────────────── -->
+    <main class="layout">
+
+      <!-- LEFT SIDEBAR: Widgets -->
+      <aside class="sidebar sidebar-left">
+
+        <!-- Clock Widget -->
+        <div class="widget widget-clock" id="widget-clock">
+          <div class="widget-label">LOCAL TIME</div>
+          <div class="clock-time" id="clock-time">00:00:00</div>
+          <div class="clock-date" id="clock-date">Loading…</div>
+          <div class="clock-tz" id="clock-tz"></div>
+        </div>
+
+        <!-- Weather Widget -->
+        <div class="widget widget-weather" id="widget-weather">
+          <div class="widget-label">WEATHER</div>
+          <div class="weather-content" id="weather-content">
+            <div class="weather-loading">
+              <div class="pulse-dot"></div>
+              <span>Fetching conditions…</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Context Widget -->
+        <div class="widget widget-context" id="widget-context">
+          <div class="widget-label">ENVIRONMENT</div>
+          <div class="context-grid" id="context-grid">
+            <div class="ctx-row"><span class="ctx-key">Browser</span><span class="ctx-val" id="ctx-browser">—</span></div>
+            <div class="ctx-row"><span class="ctx-key">Screen</span><span class="ctx-val" id="ctx-screen">—</span></div>
+            <div class="ctx-row"><span class="ctx-key">Timezone</span><span class="ctx-val" id="ctx-tz">—</span></div>
+            <div class="ctx-row"><span class="ctx-key">Battery</span><span class="ctx-val" id="ctx-battery">—</span></div>
+            <div class="ctx-row"><span class="ctx-key">Online</span><span class="ctx-val" id="ctx-online">—</span></div>
+            <div class="ctx-row"><span class="ctx-key">Platform</span><span class="ctx-val" id="ctx-platform">—</span></div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- CENTER: Chat Interface -->
+      <section class="chat-panel">
+
+        <!-- Welcome State -->
+        <div class="welcome-state" id="welcome-state">
+          <div class="welcome-orb">
+            <div class="w-ring w-ring-1"></div>
+            <div class="w-ring w-ring-2"></div>
+            <div class="w-ring w-ring-3"></div>
+            <span class="w-aura-letter">A</span>
+          </div>
+          <h1 class="welcome-title">Good <span id="greeting-time">day</span>, <span id="greeting-name">there</span>.</h1>
+          <p class="welcome-sub">I'm Aura. How can I assist you today?</p>
+          <div class="suggestion-chips" id="suggestion-chips">
+            <button class="chip" data-prompt="What can you tell me about my current environment?">My environment</button>
+            <button class="chip" data-prompt="Give me a quick productivity tip for today.">Daily tip</button>
+            <button class="chip" data-prompt="What's the weather like and what should I wear?">Weather advice</button>
+            <button class="chip" data-prompt="Summarize the latest in AI research briefly.">AI update</button>
+          </div>
+        </div>
+
+        <!-- Messages Container -->
+        <div class="messages-container" id="messages-container"></div>
+
+        <!-- Thinking Indicator -->
+        <div class="thinking-bar hidden" id="thinking-bar">
+          <div class="thinking-gems">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="thinking-text">Aura is thinking…</span>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-dock">
+          <div class="input-wrapper">
+            <textarea
+              id="chat-input"
+              class="chat-input"
+              placeholder="Ask Aura anything…"
+              rows="1"
+              aria-label="Chat input"
+            ></textarea>
+            <div class="input-actions">
+              <button class="mic-btn" id="mic-btn" title="Voice input" aria-label="Start voice input">
+                <i data-lucide="mic"></i>
+                <div class="mic-waves">
+                  <span></span><span></span><span></span>
+                </div>
+              </button>
+              <button class="send-btn" id="send-btn" title="Send" aria-label="Send message">
+                <i data-lucide="send"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-footer">
+            <span class="engine-badge" id="engine-badge">Gemini</span>
+            <span class="input-hint">Enter to send · Shift+Enter for newline</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT SIDEBAR: AI Engine Status -->
+      <aside class="sidebar sidebar-right">
+
+        <!-- AI Engine Card -->
+        <div class="widget widget-engine">
+          <div class="widget-label">AI ENGINE</div>
+          <div class="engine-toggle-wrap">
+            <button class="engine-btn active" id="engine-gemini" data-engine="gemini">Gemini</button>
+            <button class="engine-btn" id="engine-ollama" data-engine="ollama">Ollama</button>
+          </div>
+          <div class="engine-status" id="engine-status">
+            <div class="status-dot active"></div>
+            <span>Ready</span>
+          </div>
+        </div>
+
+        <!-- Aura Persona Snapshot -->
+        <div class="widget widget-persona" id="widget-persona">
+          <div class="widget-label">PERSONA</div>
+          <div class="persona-avatar" id="persona-avatar-display">
+            <span>A</span>
+          </div>
+          <div class="persona-info">
+            <div class="persona-name" id="persona-name-display">You</div>
+            <div class="persona-tone" id="persona-tone-display">Professional & Precise</div>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="widget widget-stats">
+          <div class="widget-label">SESSION</div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-num" id="stat-messages">0</span>
+              <span class="stat-label">Messages</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num" id="stat-tokens">~0</span>
+              <span class="stat-label">Est. Tokens</span>
+            </div>
+          </div>
+          <div class="tts-status" id="tts-status">
+            <i data-lucide="volume-x" class="tts-icon"></i>
+            <span>Voice off</span>
+          </div>
+        </div>
+
+        <!-- Model Info -->
+        <div class="widget widget-model">
+          <div class="widget-label">MODEL</div>
+          <div class="model-display" id="model-display">gemini-2.0-flash</div>
+          <div class="model-sub" id="model-sub">Google DeepMind</div>
+        </div>
+
+      </aside>
+
+    </main>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ SETTINGS PANEL ═══════ -->
+  <div class="settings-overlay hidden" id="settings-overlay" role="dialog" aria-modal="true" aria-label="Settings">
+    <div class="settings-panel" id="settings-panel">
+
+      <div class="settings-header">
+        <h2 class="settings-title">Settings</h2>
+        <button class="icon-btn" id="btn-close-settings" aria-label="Close settings">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="settings-body">
+
+        <!-- ── User Persona ──────────────────────────────────────── -->
+        <div class="settings-section">
+          <h3 class="section-heading">Your Profile</h3>
+          <div class="form-group">
+            <label for="s-user-name">Your Name</label>
+            <input type="text" id="s-user-name" class="s-input" placeholder="e.g. Alex" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label for="s-about">About You <span class="label-hint">(context for Aura)</span></label>
+            <textarea id="s-about" class="s-input s-textarea" placeholder="e.g. Software engineer, based in San Francisco, love reading sci-fi…" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="s-tone">Aura's Persona & Tone</label>
+            <textarea id="s-tone" class="s-input s-textarea" placeholder="e.g. Be concise, professional, slightly witty. Never use filler phrases." rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- ── Gemini Config ─────────────────────────────────────── -->
+        <div class="settings-section">
+          <h3 class="section-heading">Gemini API</h3>
+          <div class="form-group">
+            <label for="s-gemini-key">API Key <span class="label-hint">(stored locally only)</span></label>
+            <div class="password-wrap">
+              <input type="password" id="s-gemini-key" class="s-input" placeholder="AIza…" autocomplete="off" />
+              <button class="icon-btn small" id="toggle-gemini-key" aria-label="Show/Hide API key">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="s-gemini-model">Model</label>
+            <select id="s-gemini-model" class="s-input s-select">
+              <option value="gemini-2.0-flash">gemini-2.0-flash (Default)</option>
+              <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite</option>
+              <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+              <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ── Ollama Config ─────────────────────────────────────── -->
+        <div class="settings-section">
+          <h3 class="section-heading">Ollama (Local)</h3>
+          <div class="form-group">
+            <label for="s-ollama-url">Local Endpoint</label>
+            <input type="text" id="s-ollama-url" class="s-input" placeholder="http://localhost:11434" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label for="s-ollama-model">Model Name</label>
+            <input type="text" id="s-ollama-model" class="s-input" placeholder="e.g. llama3, mistral, phi3" autocomplete="off" />
+          </div>
+        </div>
+
+        <!-- ── Weather Config ────────────────────────────────────── -->
+        <div class="settings-section">
+          <h3 class="section-heading">Weather Widget</h3>
+          <div class="form-group">
+            <label for="s-weather-key">OpenWeather API Key</label>
+            <div class="password-wrap">
+              <input type="password" id="s-weather-key" class="s-input" placeholder="Your OpenWeatherMap key" autocomplete="off" />
+              <button class="icon-btn small" id="toggle-weather-key" aria-label="Show/Hide API key">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="s-weather-city">City</label>
+            <input type="text" id="s-weather-city" class="s-input" placeholder="e.g. San Francisco" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label for="s-weather-unit">Units</label>
+            <select id="s-weather-unit" class="s-input s-select">
+              <option value="metric">Celsius (metric)</option>
+              <option value="imperial">Fahrenheit (imperial)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ── Appearance ─────────────────────────────────────────── -->
+        <div class="settings-section">
+          <h3 class="section-heading">Appearance</h3>
+          <div class="form-group toggle-group">
+            <label>Dark Mode</label>
+            <button class="toggle-switch" id="toggle-dark-mode" role="switch" aria-checked="false">
+              <span class="toggle-knob"></span>
+            </button>
+          </div>
+          <div class="form-group toggle-group">
+            <label>Reduce Motion</label>
+            <button class="toggle-switch" id="toggle-reduce-motion" role="switch" aria-checked="false">
+              <span class="toggle-knob"></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="settings-footer">
+        <button class="btn-ghost" id="btn-reset-settings">Reset Defaults</button>
+        <button class="btn-primary" id="btn-save-settings">Save Settings</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ TOAST NOTIFICATIONS ══ -->
+  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
