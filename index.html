@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aura — Your Intelligent Presence. A premium AI assistant with dual engine support and contextual awareness." />
   <title>Aura — Your Intelligent Presence</title>
 
   <!-- Fonts -->
@@ -150,7 +151,7 @@
                   <span></span><span></span><span></span>
                 </div>
               </button>
-              <button class="send-btn" id="send-btn" title="Send" aria-label="Send message">
+              <button class="send-btn" id="send-btn" title="Send" aria-label="Send message" disabled>
                 <i data-lucide="send"></i>
               </button>
             </div>
@@ -175,7 +176,7 @@
           </div>
           <div class="engine-status" id="engine-status">
             <div class="status-dot active"></div>
-            <span>Ready</span>
+            <span id="status-text">Ready</span>
           </div>
         </div>
 
@@ -254,7 +255,7 @@
 
         <!-- ── Gemini Config ─────────────────────────────────────── -->
         <div class="settings-section">
-          <h3 class="section-heading">Gemini API</h3>
+          <h3 class="section-heading">Gemini API (BYOK)</h3>
           <div class="form-group">
             <label for="s-gemini-key">API Key <span class="label-hint">(stored locally only)</span></label>
             <div class="password-wrap">
@@ -263,6 +264,7 @@
                 <i data-lucide="eye"></i>
               </button>
             </div>
+            <p class="hint-text">Your API key is never sent to any server except Google's API.</p>
           </div>
           <div class="form-group">
             <label for="s-gemini-model">Model</label>
@@ -280,7 +282,7 @@
           <h3 class="section-heading">Ollama (Local)</h3>
           <div class="form-group">
             <label for="s-ollama-url">Local Endpoint</label>
-            <input type="text" id="s-ollama-url" class="s-input" placeholder="http://localhost:11434" autocomplete="off" />
+            <input type="url" id="s-ollama-url" class="s-input" placeholder="http://localhost:11434" autocomplete="off" />
           </div>
           <div class="form-group">
             <label for="s-ollama-model">Model Name</label>
@@ -292,13 +294,14 @@
         <div class="settings-section">
           <h3 class="section-heading">Weather Widget</h3>
           <div class="form-group">
-            <label for="s-weather-key">OpenWeather API Key</label>
+            <label for="s-weather-key">OpenWeather API Key (BYOK)</label>
             <div class="password-wrap">
               <input type="password" id="s-weather-key" class="s-input" placeholder="Your OpenWeatherMap key" autocomplete="off" />
               <button class="icon-btn small" id="toggle-weather-key" aria-label="Show/Hide API key">
                 <i data-lucide="eye"></i>
               </button>
             </div>
+            <p class="hint-text">Get a free API key at <a href="https://openweathermap.org/api" target="_blank">openweathermap.org</a></p>
           </div>
           <div class="form-group">
             <label for="s-weather-city">City</label>
@@ -341,7 +344,7 @@
   </div>
 
   <!-- ═══════════════════════════════════════════ TOAST NOTIFICATIONS ══ -->
-  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+  <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="true"></div>
 
   <script src="app.js"></script>
 </body>

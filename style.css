@@ -20,6 +20,9 @@
   --shadow-sm: 0 2px 8px rgba(0, 149, 255, 0.05);
   --shadow-md: 0 8px 24px rgba(0, 149, 255, 0.08);
   --shadow-lg: 0 16px 48px rgba(0, 149, 255, 0.12);
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
   
   /* Shared */
   --font-main: 'Poppins', sans-serif;
@@ -71,6 +74,20 @@ button {
   border: none;
   background: none;
   outline: none;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 /* ── AMBIENT BACKGROUND ──────────────────────────────────────────── */
@@ -257,7 +274,7 @@ button {
   transition: var(--transition-smooth);
 }
 
-.icon-btn:hover {
+.icon-btn:hover:not(:disabled) {
   background: var(--bg-tertiary);
   color: var(--accent-primary);
   transform: translateY(-2px);
@@ -309,6 +326,11 @@ button {
   border-color: var(--accent-primary);
 }
 
+.widget.error {
+  border-color: var(--error-color);
+  background: rgba(239, 68, 68, 0.05);
+}
+
 .widget-label {
   font-size: 0.65rem;
   font-weight: 600;
@@ -332,6 +354,12 @@ button {
   color: var(--text-secondary);
 }
 
+.clock-tz {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
 /* Weather Widget */
 .weather-loading {
   display: flex;
@@ -339,6 +367,28 @@ button {
   gap: 12px;
   color: var(--text-muted);
   font-size: 0.85rem;
+}
+
+.weather-error {
+  color: var(--error-color);
+  font-size: 0.85rem;
+}
+
+.weather-display {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weather-temp {
+  font-size: 1.8rem;
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.weather-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
 }
 
 .pulse-dot {
@@ -370,6 +420,58 @@ button {
 
 .ctx-key { color: var(--text-muted); }
 .ctx-val { color: var(--text-secondary); font-weight: 500; }
+
+/* Engine Status */
+.engine-toggle-wrap {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.engine-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  transition: var(--transition-smooth);
+}
+
+.engine-btn:hover {
+  border-color: var(--accent-primary);
+}
+
+.engine-btn.active {
+  background: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+}
+
+.engine-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--error-color);
+  animation: statusPulse 2s infinite;
+}
+
+.status-dot.active {
+  background: var(--success-color);
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
 
 /* ── CHAT PANEL ─────────────────────────────────────────────────── */
 .chat-panel {
@@ -496,6 +598,7 @@ button {
   font-size: 0.95rem;
   line-height: 1.6;
   position: relative;
+  word-wrap: break-word;
 }
 
 .message-user .msg-bubble {
@@ -511,6 +614,12 @@ button {
   border: 1px solid var(--border-color);
   border-bottom-left-radius: 4px;
   backdrop-filter: blur(8px);
+}
+
+.msg-error .msg-bubble {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--error-color);
+  color: var(--error-color);
 }
 
 /* Thinking Bar */
@@ -585,6 +694,10 @@ button {
   max-height: 200px;
 }
 
+.chat-input::placeholder {
+  color: var(--text-muted);
+}
+
 .input-actions {
   display: flex;
   gap: 8px;
@@ -605,15 +718,24 @@ button {
   color: white;
 }
 
-.send-btn:hover {
+.send-btn:not(:disabled):hover {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0, 149, 255, 0.3);
+}
+
+.send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .mic-btn {
   background: var(--bg-tertiary);
   color: var(--accent-primary);
   position: relative;
+}
+
+.mic-btn:hover {
+  background: var(--bg-secondary);
 }
 
 .mic-btn.active {
@@ -728,6 +850,18 @@ button {
   margin-bottom: 8px;
 }
 
+.label-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.hint-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
 .s-input {
   width: 100%;
   padding: 12px 16px;
@@ -747,6 +881,146 @@ button {
   outline: none;
 }
 
+.s-textarea {
+  resize: vertical;
+}
+
+.s-select {
+  cursor: pointer;
+}
+
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap .s-input {
+  padding-right: 44px;
+}
+
+.password-wrap .icon-btn {
+  position: absolute;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+}
+
+.toggle-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  background: var(--border-color);
+  border-radius: 14px;
+  transition: var(--transition-smooth);
+}
+
+.toggle-switch.active {
+  background: var(--accent-primary);
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  transition: var(--transition-smooth);
+}
+
+.toggle-switch.active .toggle-knob {
+  transform: translateX(20px);
+}
+
+.settings-footer {
+  padding: 24px 32px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-primary, .btn-ghost {
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition-smooth);
+}
+
+.btn-primary {
+  background: var(--accent-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 149, 255, 0.3);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-secondary);
+}
+
+/* ── TOAST NOTIFICATIONS ────────────────────────────────────────── */
+.toast-stack {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toast {
+  background: var(--glass-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 24px;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-lg);
+  animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.toast.success {
+  border-color: var(--success-color);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.toast.error {
+  border-color: var(--error-color);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.toast.warning {
+  border-color: var(--warning-color);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(400px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 /* ── UTILS ──────────────────────────────────────────────────────── */
 .hidden { display: none !important; }
 
@@ -758,3 +1032,12 @@ button {
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Reduce Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
