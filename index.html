@@ -3,7 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Aura — Your Intelligent Presence. A premium AI assistant with dual engine support and contextual awareness." />
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Aura — Your Intelligent Presence. A premium, minimalist AI assistant with dual engine support (Gemini & Ollama), real-time weather, environment awareness, and beautiful UI." />
+  <meta name="keywords" content="AI assistant, Gemini API, Ollama, chatbot, intelligent presence, weather widget, context-aware AI" />
+  <meta name="author" content="Aura Contributors" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="revisit-after" content="7 days" />
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aura-ai.example.com/" />
+  <meta property="og:title" content="Aura — Your Intelligent Presence" />
+  <meta property="og:description" content="A premium AI assistant with dual engine support, real-time weather, and beautiful interface." />
+  <meta property="og:image" content="./logo.png" />
+  <meta property="og:site_name" content="Aura AI" />
+  
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://aura-ai.example.com/" />
+  <meta property="twitter:title" content="Aura — Your Intelligent Presence" />
+  <meta property="twitter:description" content="A premium AI assistant with dual engine support, real-time weather, and beautiful interface." />
+  <meta property="twitter:image" content="./logo.png" />
+  
+  <!-- Security Headers -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://generativelanguage.googleapis.com https://api.openweathermap.org http://localhost:11434; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  
+  <!-- Favicon & Logo -->
+  <link rel="icon" type="image/png" href="./logo.png" />
+  <link rel="apple-touch-icon" href="./logo.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#0095ff" />
+  
   <title>Aura — Your Intelligent Presence</title>
 
   <!-- Fonts -->
@@ -18,6 +55,29 @@
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
 
   <link rel="stylesheet" href="style.css" />
+  
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Aura",
+    "description": "A premium AI assistant with dual engine support, real-time weather, and beautiful interface",
+    "url": "https://aura-ai.example.com",
+    "image": "./logo.png",
+    "applicationCategory": "Productivity",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Aura Contributors"
+    },
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
 </head>
 <body>
 
@@ -30,8 +90,9 @@
   </div>
 
   <!-- ═══════════════════════════════════════════ BOOT SCREEN ══════════ -->
-  <div id="boot-screen" class="boot-screen">
+  <div id="boot-screen" class="boot-screen" role="status" aria-label="Loading Aura">
     <div class="boot-logo">
+      <img src="./logo.png" alt="Aura Logo" class="boot-logo-img" />
       <div class="boot-ring"></div>
       <div class="boot-ring boot-ring-2"></div>
       <div class="boot-ring boot-ring-3"></div>
@@ -44,12 +105,12 @@
   <div id="app" class="app hidden">
 
     <!-- ─── HEADER ─────────────────────────────────────────────────── -->
-    <header class="topbar">
+    <header class="topbar" role="banner">
       <div class="topbar-brand">
-        <div class="brand-gem"></div>
+        <img src="./logo.png" alt="Aura Logo" class="brand-logo" />
         <span class="brand-name">AURA</span>
       </div>
-      <nav class="topbar-actions">
+      <nav class="topbar-actions" aria-label="Main navigation">
         <button class="icon-btn" id="btn-tts" title="Toggle voice response" aria-label="Toggle Text-to-Speech">
           <i data-lucide="volume-2"></i>
         </button>
@@ -63,23 +124,23 @@
     </header>
 
     <!-- ─── MAIN LAYOUT ────────────────────────────────────────────── -->
-    <main class="layout">
+    <main class="layout" role="main">
 
       <!-- LEFT SIDEBAR: Widgets -->
-      <aside class="sidebar sidebar-left">
+      <aside class="sidebar sidebar-left" aria-label="System information widgets">
 
         <!-- Clock Widget -->
         <div class="widget widget-clock" id="widget-clock">
           <div class="widget-label">LOCAL TIME</div>
-          <div class="clock-time" id="clock-time">00:00:00</div>
-          <div class="clock-date" id="clock-date">Loading…</div>
+          <div class="clock-time" id="clock-time" aria-live="polite">00:00:00</div>
+          <div class="clock-date" id="clock-date" aria-live="polite">Loading…</div>
           <div class="clock-tz" id="clock-tz"></div>
         </div>
 
         <!-- Weather Widget -->
         <div class="widget widget-weather" id="widget-weather">
           <div class="widget-label">WEATHER</div>
-          <div class="weather-content" id="weather-content">
+          <div class="weather-content" id="weather-content" aria-live="polite">
             <div class="weather-loading">
               <div class="pulse-dot"></div>
               <span>Fetching conditions…</span>
@@ -103,7 +164,7 @@
       </aside>
 
       <!-- CENTER: Chat Interface -->
-      <section class="chat-panel">
+      <section class="chat-panel" role="region" aria-label="Chat interface">
 
         <!-- Welcome State -->
         <div class="welcome-state" id="welcome-state">
@@ -115,7 +176,7 @@
           </div>
           <h1 class="welcome-title">Good <span id="greeting-time">day</span>, <span id="greeting-name">there</span>.</h1>
           <p class="welcome-sub">I'm Aura. How can I assist you today?</p>
-          <div class="suggestion-chips" id="suggestion-chips">
+          <div class="suggestion-chips" id="suggestion-chips" role="region" aria-label="Suggested prompts">
             <button class="chip" data-prompt="What can you tell me about my current environment?">My environment</button>
             <button class="chip" data-prompt="Give me a quick productivity tip for today.">Daily tip</button>
             <button class="chip" data-prompt="What's the weather like and what should I wear?">Weather advice</button>
@@ -124,10 +185,10 @@
         </div>
 
         <!-- Messages Container -->
-        <div class="messages-container" id="messages-container"></div>
+        <div class="messages-container" id="messages-container" role="log" aria-live="polite" aria-label="Chat messages"></div>
 
         <!-- Thinking Indicator -->
-        <div class="thinking-bar hidden" id="thinking-bar">
+        <div class="thinking-bar hidden" id="thinking-bar" role="status" aria-label="Aura is thinking">
           <div class="thinking-gems">
             <span></span><span></span><span></span>
           </div>
@@ -165,12 +226,12 @@
       </section>
 
       <!-- RIGHT SIDEBAR: AI Engine Status -->
-      <aside class="sidebar sidebar-right">
+      <aside class="sidebar sidebar-right" aria-label="AI engine and session information">
 
         <!-- AI Engine Card -->
         <div class="widget widget-engine">
           <div class="widget-label">AI ENGINE</div>
-          <div class="engine-toggle-wrap">
+          <div class="engine-toggle-wrap" role="group" aria-label="AI engine selection">
             <button class="engine-btn active" id="engine-gemini" data-engine="gemini">Gemini</button>
             <button class="engine-btn" id="engine-ollama" data-engine="ollama">Ollama</button>
           </div>
@@ -264,7 +325,7 @@
                 <i data-lucide="eye"></i>
               </button>
             </div>
-            <p class="hint-text">Your API key is never sent to any server except Google's API.</p>
+            <p class="hint-text">Your API key is never sent to any server except Google's API. <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer">Get your API key</a></p>
           </div>
           <div class="form-group">
             <label for="s-gemini-model">Model</label>
@@ -301,7 +362,7 @@
                 <i data-lucide="eye"></i>
               </button>
             </div>
-            <p class="hint-text">Get a free API key at <a href="https://openweathermap.org/api" target="_blank">openweathermap.org</a></p>
+            <p class="hint-text">Get a free API key at <a href="https://openweathermap.org/api" target="_blank" rel="noopener noreferrer">openweathermap.org</a></p>
           </div>
           <div class="form-group">
             <label for="s-weather-city">City</label>
