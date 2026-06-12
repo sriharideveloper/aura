@@ -59,6 +59,11 @@
   -webkit-font-smoothing: antialiased;
 }
 
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
 body {
   font-family: var(--font-main);
   background-color: var(--bg-primary);
@@ -246,6 +251,7 @@ a:hover {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   z-index: 100;
+  flex-shrink: 0;
 }
 
 .topbar-brand {
@@ -303,6 +309,11 @@ a:hover {
   background: var(--bg-tertiary);
 }
 
+.icon-btn.small {
+  width: 32px;
+  height: 32px;
+}
+
 /* ── LAYOUT ─────────────────────────────────────────────────────── */
 .layout {
   flex: 1;
@@ -320,6 +331,7 @@ a:hover {
   border-right: 1px solid var(--border-color);
   background: rgba(255, 255, 255, 0.3);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar-right {
@@ -336,6 +348,7 @@ a:hover {
   backdrop-filter: blur(8px);
   box-shadow: var(--shadow-sm);
   transition: var(--transition-smooth);
+  flex-shrink: 0;
 }
 
 .widget:hover {
@@ -415,6 +428,7 @@ a:hover {
   background: var(--accent-primary);
   border-radius: 50%;
   animation: pulse 1.5s infinite;
+  flex-shrink: 0;
 }
 
 @keyframes pulse {
@@ -480,6 +494,7 @@ a:hover {
   border-radius: 50%;
   background: var(--error-color);
   animation: statusPulse 2s infinite;
+  flex-shrink: 0;
 }
 
 .status-dot.active {
@@ -497,6 +512,7 @@ a:hover {
   flex-direction: column;
   position: relative;
   background: transparent;
+  min-height: 0;
 }
 
 /* Welcome State */
@@ -508,6 +524,7 @@ a:hover {
   justify-content: center;
   padding: 40px;
   text-align: center;
+  overflow-y: auto;
 }
 
 .welcome-orb {
@@ -518,6 +535,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .w-ring {
@@ -587,11 +605,13 @@ a:hover {
 .messages-container {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 40px 10%;
   display: flex;
   flex-direction: column;
   gap: 32px;
   scroll-behavior: smooth;
+  min-height: 0;
 }
 
 .message {
@@ -617,6 +637,7 @@ a:hover {
   line-height: 1.6;
   position: relative;
   word-wrap: break-word;
+  word-break: break-word;
 }
 
 .message-user .msg-bubble {
@@ -646,6 +667,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .thinking-gems {
@@ -659,6 +681,7 @@ a:hover {
   background: var(--accent-primary);
   border-radius: 50%;
   animation: gemBounce 1.4s infinite ease-in-out;
+  flex-shrink: 0;
 }
 
 .thinking-gems span:nth-child(2) { animation-delay: 0.2s; }
@@ -673,19 +696,21 @@ a:hover {
   font-size: 0.85rem;
   color: var(--text-muted);
   font-style: italic;
+  white-space: nowrap;
 }
 
 /* Input Area */
 .input-dock {
   padding: 24px 10% 40px;
   background: linear-gradient(to top, var(--bg-primary) 80%, transparent);
+  flex-shrink: 0;
 }
 
 .input-wrapper {
   background: var(--glass-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 8px 8px 8px 24px;
+  padding: 12px 12px 12px 24px;
   display: flex;
   align-items: flex-end;
   gap: 12px;
@@ -710,6 +735,7 @@ a:hover {
   color: var(--text-primary);
   resize: none;
   max-height: 200px;
+  min-height: 24px;
 }
 
 .chat-input::placeholder {
@@ -719,6 +745,7 @@ a:hover {
 .input-actions {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .send-btn, .mic-btn {
@@ -729,6 +756,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   transition: var(--transition-smooth);
+  flex-shrink: 0;
 }
 
 .send-btn {
@@ -775,6 +803,7 @@ a:hover {
   display: flex;
   justify-content: space-between;
   padding: 12px 24px 0;
+  flex-shrink: 0;
 }
 
 .engine-badge {
@@ -829,6 +858,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .settings-title {
@@ -840,6 +870,7 @@ a:hover {
 .settings-body {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 32px;
 }
 
@@ -878,6 +909,7 @@ a:hover {
   font-size: 0.75rem;
   color: var(--text-muted);
   margin-top: 6px;
+  line-height: 1.5;
 }
 
 .s-input {
@@ -964,6 +996,7 @@ a:hover {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+  flex-shrink: 0;
 }
 
 .btn-primary, .btn-ghost {
@@ -1003,6 +1036,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  pointer-events: none;
 }
 
 .toast {
@@ -1017,6 +1051,7 @@ a:hover {
   align-items: center;
   gap: 12px;
   max-width: 400px;
+  pointer-events: auto;
 }
 
 .toast.success {
@@ -1039,6 +1074,11 @@ a:hover {
   to { opacity: 1; transform: translateX(0); }
 }
 
+@keyframes toastSlideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(400px); }
+}
+
 /* ── UTILS ──────────────────────────────────────────────────────── */
 .hidden { display: none !important; }
 
@@ -1051,8 +1091,7 @@ a:hover {
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* Reduce Motion */
-/* Responsive Design */
+/* ── RESPONSIVE DESIGN ──────────────────────────────────────────── */
 @media (max-width: 1400px) {
   .layout {
     grid-template-columns: 280px 1fr 280px;
@@ -1111,11 +1150,20 @@ a:hover {
   .message {
     max-width: 95%;
   }
+  
+  .messages-container {
+    padding: 16px 4%;
+  }
+  
+  .input-dock {
+    padding: 12px 4% 24px;
+  }
 }
 
 @media (max-width: 480px) {
   .topbar {
     height: 56px;
+    padding: 0 12px;
   }
   
   .brand-name {
@@ -1131,7 +1179,7 @@ a:hover {
   }
   
   .input-wrapper {
-    padding: 6px 6px 6px 16px;
+    padding: 8px 8px 8px 16px;
   }
   
   .send-btn, .mic-btn {
@@ -1147,6 +1195,31 @@ a:hover {
   
   .toast {
     max-width: 90vw;
+  }
+  
+  .messages-container {
+    padding: 12px 3%;
+    gap: 16px;
+  }
+  
+  .input-dock {
+    padding: 8px 3% 16px;
+  }
+  
+  .message {
+    max-width: 100%;
+  }
+  
+  .settings-header {
+    padding: 16px;
+  }
+  
+  .settings-body {
+    padding: 16px;
+  }
+  
+  .settings-footer {
+    padding: 16px;
   }
 }
 

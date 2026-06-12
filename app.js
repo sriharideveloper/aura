@@ -2,6 +2,7 @@
  * AURA — CORE APPLICATION LOGIC
  * Production-Ready with Full API Integration
  * Features: Gemini/Ollama API, OpenWeather, Local Storage, Context Injection, Voice Input
+ * BYOK: All API keys stored safely in browser localStorage, never sent to any server except their respective APIs
  */
 
 // ═══════════════════════════════════════════════════════════════════
@@ -32,7 +33,7 @@ const Utils = {
 };
 
 // ═══════════════════════════════════════════════════════════════════
-// STORAGE & CONFIG MANAGEMENT
+// STORAGE & CONFIG MANAGEMENT (BYOK - Bring Your Own Key)
 // ═══════════════════════════════════════════════════════════════════
 
 const StorageManager = {
@@ -254,7 +255,7 @@ const WeatherAPI = {
 };
 
 // ═══════════════════════════════════════════════════════════════════
-// GEMINI API
+// GEMINI API (BYOK)
 // ═══════════════════════════════════════════════════════════════════
 
 const GeminiAPI = {
@@ -262,7 +263,7 @@ const GeminiAPI = {
 
   async callAPI(apiKey, model, messages, systemPrompt) {
     if (!apiKey) {
-      throw new Error('Gemini API key not configured. Please add it in Settings.');
+      throw new Error('Gemini API key not configured. Please add it in Settings (BYOK).');
     }
 
     if (!this.SUPPORTED_MODELS.includes(model)) {
@@ -282,7 +283,7 @@ const GeminiAPI = {
       }));
 
       const payload = {
-        system_instruction: systemPrompt, // Gemini 1.5 uses system_instruction
+        system_instruction: systemPrompt,
         contents: contents,
         generationConfig: {
           temperature: 0.7,
@@ -326,7 +327,7 @@ const GeminiAPI = {
 };
 
 // ═══════════════════════════════════════════════════════════════════
-// OLLAMA API
+// OLLAMA API (Local)
 // ═══════════════════════════════════════════════════════════════════
 
 const OllamaAPI = {
@@ -503,7 +504,7 @@ const Aura = {
     ttsEnabled: false,
     messages: [],
     messageCount: 0,
-    tokenCount: 0, // Placeholder, actual token count requires server-side processing
+    tokenCount: 0,
     ollamaModels: []
   },
 
@@ -587,7 +588,7 @@ const Aura = {
       toggleDarkModeBtn: document.getElementById('toggle-dark-mode'),
       toggleGeminiKeyBtn: document.getElementById('toggle-gemini-key'),
       toggleWeatherKeyBtn: document.getElementById('toggle-weather-key'),
-      ollamaModelSelect: document.getElementById('s-ollama-model') // This will be a select element
+      ollamaModelSelect: document.getElementById('s-ollama-model')
     };
   },
 
@@ -856,8 +857,8 @@ const Aura = {
 
     // Ollama
     this.elements.sOllamaUrl.value = StorageManager.get('ollama_url', 'http://localhost:11434');
-    this.elements.sOllamaModel.value = StorageManager.get('ollama_model', ''); // Will be populated by fetchOllamaModels
-    await this.fetchOllamaModels(); // Fetch models on load
+    this.elements.sOllamaModel.value = StorageManager.get('ollama_model', '');
+    await this.fetchOllamaModels();
 
     // Weather
     this.elements.sWeatherKey.value = StorageManager.get('weather_key', '');
@@ -896,7 +897,7 @@ const Aura = {
     try {
       const models = await OllamaAPI.fetchModels(endpoint);
       this.state.ollamaModels = models;
-      this.elements.ollamaModelSelect.innerHTML = ''; // Clear previous options
+      this.elements.ollamaModelSelect.innerHTML = '';
       if (models.length === 0) {
         this.elements.ollamaModelSelect.innerHTML = '<option value="">No models found</option>';
       } else {
@@ -907,7 +908,6 @@ const Aura = {
           this.elements.ollamaModelSelect.appendChild(option);
         });
       }
-      // Select previously stored model or first available
       const storedOllamaModel = StorageManager.get('ollama_model');
       if (storedOllamaModel && models.includes(storedOllamaModel)) {
         this.elements.ollamaModelSelect.value = storedOllamaModel;
@@ -948,8 +948,8 @@ const Aura = {
       // Persist current engine choice
       StorageManager.set('current_engine', this.state.currentEngine);
 
-      this.loadSettings(); // Reload settings to update UI
-      this.loadWeather(); // Reload weather with new settings
+      this.loadSettings();
+      this.loadWeather();
       this.closeSettings();
       Toast.success('Settings saved successfully');
     } catch (e) {
@@ -968,7 +968,6 @@ const Aura = {
 
   openSettings() {
     this.elements.settingsOverlay.classList.remove('hidden');
-    // Ensure current settings are loaded when opening
     this.loadSettings();
   },
 
@@ -990,7 +989,7 @@ const Aura = {
     const icon = inputElement.nextElementSibling.querySelector('i');
     if (icon) {
       icon.setAttribute('data-lucide', type === 'password' ? 'eye' : 'eye-off');
-      lucide.createIcons(); // Re-render lucide icon
+      lucide.createIcons();
     }
   },
 
@@ -998,7 +997,7 @@ const Aura = {
 
   switchEngine(engine) {
     this.state.currentEngine = engine;
-    StorageManager.set('current_engine', engine); // Persist engine choice
+    StorageManager.set('current_engine', engine);
     this.elements.engineBtns.forEach(btn => btn.classList.remove('active'));
     const activeBtn = document.querySelector(`[data-engine="${engine}"]`);
     if (activeBtn) activeBtn.classList.add('active');
@@ -1039,7 +1038,6 @@ const Aura = {
 
   updateStats() {
     this.elements.statMessages.textContent = this.state.messageCount;
-    // Placeholder for token count, actual requires API response parsing
     this.elements.statTokens.textContent = `~${Math.round(this.state.messageCount * 150)}`;
   }
 };
